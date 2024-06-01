@@ -1,0 +1,1 @@
+ffmpeg -i .\BadApple.mp4 -vf "fps=30" .\origin_frames\$filename%04d.png

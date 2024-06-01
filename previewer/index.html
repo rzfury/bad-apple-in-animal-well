@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body style="padding: 2rem">
+  <div data-aui data-aui-typography>
+    <div data-aui-card>
+      <div data-aui-card-body style="padding-bottom: 2rem">
+        <div style="display: flex; align-items: center; column-gap: 1rem; margin-bottom: 2rem;">
+          <h1>Frame Previewer</h1>
+          <div style="display: flex; align-items: center; column-gap: 1rem;">
+            <div data-aui-input-text>
+              <div data-aui-input-border>
+                <input id="frame-number" type="text" placeholder="Frame number" style="border:none"/>
+              </div>
+            </div>
+            <button id="goto" data-aui-button>
+              <div data-aui-button-bg aria-hidden="true"></div>
+              <span data-aui-button-text>GO</span>
+            </button>
+            <div>|</div>
+            <button id="prev-img" data-aui-button>
+              <div data-aui-button-bg aria-hidden="true"></div>
+              <span data-aui-button-text>PREV</span>
+            </button>
+            <button id="next-img" data-aui-button>
+              <div data-aui-button-bg aria-hidden="true"></div>
+              <span data-aui-button-text>NEXT</span>
+            </button>
+            <div>|</div>
+            <button id="play" data-aui-button>
+              <div data-aui-button-bg aria-hidden="true"></div>
+              <span data-aui-button-text>PLAY</span>
+            </button>
+            <button id="stop" data-aui-button>
+              <div data-aui-button-bg aria-hidden="true"></div>
+              <span data-aui-button-text>STOP</span>
+            </button>
+            <button id="reset" data-aui-button>
+              <div data-aui-button-bg aria-hidden="true"></div>
+              <span data-aui-button-text>RESET</span>
+            </button>
+          </div>
+        </div>
+        <div style="display: flex; column-gap: 2rem;">
+          <div style="flex: 50%;" data-aui-card>
+            <div data-aui-card-body style="display: flex; justify-content: center;">
+              <img id="aw-bnuy" src="/aw-bnuy/0001" style="height: 400px;"/>
+            </div>
+          </div>
+          <div style="flex: 50%;" data-aui-card>
+            <div data-aui-card-body style="display: flex; justify-content: center;">
+              <img id="origin" src="/origin/0001" style="aspect-ratio: 2/1; height: 400px; image-rendering: pixelated;"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let curr = 1;
+    let intv = -1;
+
+    document.getElementById('frame-number').value = '0001'
+
+    document.getElementById('goto').addEventListener('click', (e) => {
+      const val = parseInt(document.getElementById('frame-number').value)
+      curr = Math.max(Math.min(val, 3286), 0)
+      change()
+    })
+
+    document.getElementById('next-img').addEventListener('click', (e) => {
+      curr = Math.min(curr + 1, 3286)
+      change()
+    })
+
+    document.getElementById('prev-img').addEventListener('click', (e) => {
+      curr = Math.max(curr - 1, 1)
+      change()
+    })
+
+    document.getElementById('play').addEventListener('click', (e) => {
+      intv = setInterval(() => {
+        curr = Math.min(curr + 1, 3286)
+        change()
+        if (curr >= 3286)
+          clearInterval(intv)
+      }, 1000 / 15)
+    })
+
+    document.getElementById('stop').addEventListener('click', (e) => {
+      clearInterval(intv)
+    })
+
+    document.getElementById('reset').addEventListener('click', (e) => {
+      curr = 1
+      change()
+    })
+
+    function change() {
+      const str = curr.toString().padStart(4, '0');
+      document.getElementById('aw-bnuy').src = `/aw-bnuy/${str}`
+      document.getElementById('origin').src = `/origin/${str}`
+      document.getElementById('frame-number').value = str
+    }
+  </script>
+</body>
+
+</html>

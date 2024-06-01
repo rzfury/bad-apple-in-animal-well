@@ -1,0 +1,3 @@
+0-255 frames in 2818 seconds
+256-940 frames in ???? (crashed)
+941-3268 frames in 32852 seconds
